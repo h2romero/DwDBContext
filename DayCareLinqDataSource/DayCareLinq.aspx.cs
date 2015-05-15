@@ -51,52 +51,50 @@ namespace DayCareLinqDataSource
             MessageQueue msgQin = new MessageQueue(".\\Private$\\daycare");
             msgQin.Send(msg);
 
-            //////// Receive Message //////
+            ////////// Receive Message //////
 
-            MessageQueue msgQout = new MessageQueue(".\\Private$\\daycare");
+            //MessageQueue msgQout = new MessageQueue(".\\Private$\\daycare");
 
-            DimPersonSCD1 qPerson = new DimPersonSCD1();
-            Object o = new Object();
-            System.Type[] arrTypes = new System.Type[2];
-            arrTypes[0] = qPerson.GetType();
-            arrTypes[1] = o.GetType();
-            msgQout.Formatter = new XmlMessageFormatter(arrTypes);
-            qPerson = (DimPersonSCD1)msgQout.Receive().Body;
+            //DimPersonSCD1 qPerson = new DimPersonSCD1();
+            //Object o = new Object();
+            //System.Type[] arrTypes = new System.Type[2];
+            //arrTypes[0] = qPerson.GetType();
+            //arrTypes[1] = o.GetType();
+            //msgQout.Formatter = new XmlMessageFormatter(arrTypes);
+            //qPerson = (DimPersonSCD1)msgQout.Receive().Body;
 
-            ////////// Update Person object from db   ///////
+            //////////// Update Person object from db   ///////
 
-            DimPersonSCD1 newPerson = new DimPersonSCD1();
-            using (var dbSmartReportingContext = new SmartReportingDevContext())
-            {
-                newPerson = dbSmartReportingContext.DimPersonSCD1.Where(p => p.PersonID == qPerson.PersonID).FirstOrDefault<DimPersonSCD1>();
-            }
+            //DimPersonSCD1 newPerson = new DimPersonSCD1();
+            //using (var dbSmartReportingContext = new SmartReportingDevContext())
+            //{
+            //    newPerson = dbSmartReportingContext.DimPersonSCD1.Where(p => p.PersonID == qPerson.PersonID).FirstOrDefault<DimPersonSCD1>();
+            //}
 
-            if (newPerson != null)
-            {
-                newPerson.FirstName = qPerson.FirstName;
-                newPerson.MiddleName = qPerson.MiddleName;
-                newPerson.LastName = qPerson.LastName;
-                newPerson.PreferredName = qPerson.PreferredName;
-                newPerson.BirthDate = qPerson.BirthDate;
-                //newPerson.Gender = qPerson.Gender;        // Do not modify Ethnicity for now since lookup is not ready
-                newPerson.Email = qPerson.Email;
-                //newPerson.Ethnicity = qPerson.Ethnicity;  // Do not modify Gender for now since lookup is not ready
-                newPerson.DWUpdateDate = DateTime.Now;
+            //if (newPerson != null)
+            //{
+            //    newPerson.FirstName = qPerson.FirstName;
+            //    newPerson.MiddleName = qPerson.MiddleName;
+            //    newPerson.LastName = qPerson.LastName;
+            //    newPerson.PreferredName = qPerson.PreferredName;
+            //    newPerson.BirthDate = qPerson.BirthDate;
+            //    //newPerson.Gender = qPerson.Gender;        // Do not modify Ethnicity for now since lookup is not ready
+            //    newPerson.Email = qPerson.Email;
+            //    //newPerson.Ethnicity = qPerson.Ethnicity;  // Do not modify Gender for now since lookup is not ready
+            //    newPerson.DWUpdateDate = DateTime.Now;
 
-                /////// Update db with modified Person object //////////
+            //    /////// Update db with modified Person object //////////
 
-                using (var dbDestSmartReportingContext = new SmartReportingDevContext())
-                {
-                    dbDestSmartReportingContext.Entry(newPerson).State = System.Data.Entity.EntityState.Modified;
-                    dbDestSmartReportingContext.SaveChanges();
-                }
+            //    using (var dbDestSmartReportingContext = new SmartReportingDevContext())
+            //    {
+            //        dbDestSmartReportingContext.Entry(newPerson).State = System.Data.Entity.EntityState.Modified;
+            //        dbDestSmartReportingContext.SaveChanges();
+            //    }               
 
+            //}
 
-                // Cancel Update for now since hromero does not have permissions to make changes on DayCare_1
-                e.Cancel = true;
-
-
-            }
+            // Cancel Update for now since hromero does not have permissions to make changes on DayCare_1
+            e.Cancel = true;
         }
     }
 }
